@@ -76,8 +76,20 @@ createShip()
 Parameters: no parameters
 Returns: 2D list of ints
 '''
+import random
 def createShip():
-    return
+    rows=random.randint(1,8)
+    cols=random.randint(1,8)
+    fordirection=random.randint(0,1)
+    if(fordirection==1):
+        a=[]
+        for i in range(rows-1,rows+2,1):
+            a.append([i,cols])
+    else:
+        a=[]
+        for i in range(cols-1,cols+2,1):
+            a.append([rows,i])
+    return a
 
 
 '''
