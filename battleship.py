@@ -64,10 +64,10 @@ Returns: 2D list of ints
 def emptyGrid(rows, cols):
     grid=[]
     for i in range(rows):
-        l1=[]
+        col_list=[] #this list is used to add the columns
         for j in range(cols):
-            l1.append(EMPTY_UNCLICKED)
-        grid.append(l1)
+            col_list.append(EMPTY_UNCLICKED) # The list l1 is appended with the value of EMPTY_UNCLICKED variable
+        grid.append(col_list)
     return grid
 
 
@@ -76,8 +76,20 @@ createShip()
 Parameters: no parameters
 Returns: 2D list of ints
 '''
+import random
 def createShip():
-    return
+    rows=random.randint(1,8)
+    cols=random.randint(1,8)
+    fordirection=random.randint(0,1)
+    if(fordirection==1):
+        a=[]
+        for i in range(rows-1,rows+2,1):
+            a.append([i,cols])
+    else:
+        a=[]
+        for i in range(cols-1,cols+2,1):
+            a.append([rows,i])
+    return a
 
 
 '''
@@ -86,7 +98,14 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    return
+    count=0
+    for i in ship:
+        if grid[i[0]][i[1]]==1:
+            count+=1
+            if count==3:
+                return True
+        else:
+            return False
 
 
 '''
@@ -95,7 +114,15 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    return
+    board=grid
+    count=0
+    while count<numShips:
+        ship=createShip()
+        if checkShip(board,ship)==True:
+            for i in range(len(ship)):
+                board[ship[i][0]][ship[i][1]]=SHIP_UNCLICKED
+            count +=1
+    return board
 
 
 '''
@@ -276,4 +303,8 @@ def runSimulation(w, h):
 if __name__ == "__main__":
 
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
+    #runSimulation(500, 500)
+    #test.testEmptyGrid()
+    #test.testCreateShip()
+    #test.testCheckShip()
+    # #test.testAddShips()
