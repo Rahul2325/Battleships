@@ -152,7 +152,19 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    col=ship[0][1]
+    for i in range(len(ship)):
+        if(ship[i][1]!=col):
+            return False 
+    row=[]
+    for i in range(len(ship)):
+        row.append(ship[i][0])
+    row.sort()
+    for i in range(len(row)-1):
+        if 1+row[i]!=row[i+1]:
+            return False
+    return True
+    
 
 
 '''
@@ -161,7 +173,18 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
+    row=ship[0][0]
+    col=[]
+    for i in range(len(ship)):
+        if(ship[i][0]!=row):
+            return False 
+    for i in range(len(ship)):
+        col.append(ship[i][1])
+    col.sort()
+    for i in range(len(col)-1):
+        if 1+col[i]!=col[i+1]:
+            return False
+    return True
 
 
 '''
@@ -170,7 +193,7 @@ Parameters: dict mapping strs to values ; mouse event object
 Returns: list of ints
 '''
 def getClickedCell(data, event):
-    return
+    return [int(event.y/data["cellsize"]),int(event.x/data["cellsize"])]
 
 
 '''
@@ -179,6 +202,12 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for i in range(len(ship)):
+        shipcorx1=data["cellsize"]*ship[i][1]
+        shipcory1=data["cellsize"]*ship[i][0]
+        shipcorx2=shipcorx1+data["cellsize"]
+        shipcory2=shipcory1+data["cellsize"]
+        canvas.create_rectangle(shipcorx1,shipcory1,shipcorx2,shipcory2,fill='white') 
     return
 
 
@@ -311,7 +340,11 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    test.testMakeModel()
+    #test.testIsVertical()
+    test.testDrawShip()
+    #test.testGetClickedCell()
+    #test.testIsHorizontal()
+    #test.testMakeModel()
     ## Finally, run the simulation to test it manually ##
     #runSimulation(500, 500)
     #test.testCheckShip()
