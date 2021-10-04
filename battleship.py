@@ -202,6 +202,12 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
+    for i in range(len(ship)):
+        shipcorx1=data["cellsize"]*ship[i][1]
+        shipcory1=data["cellsize"]*ship[i][0]
+        shipcorx2=shipcorx1+data["cellsize"]
+        shipcory2=shipcory1+data["cellsize"]
+        canvas.create_rectangle(shipcorx1,shipcory1,shipcorx2,shipcory2,fill='white') 
     return
 
 
@@ -335,7 +341,8 @@ def runSimulation(w, h):
 # This code runs the test cases to check your work
 if __name__ == "__main__":
     #test.testIsVertical()
-    test.testGetClickedCell()
+    test.testDrawShip()
+    #test.testGetClickedCell()
     #test.testIsHorizontal()
     #test.testMakeModel()
     ## Finally, run the simulation to test it manually ##
