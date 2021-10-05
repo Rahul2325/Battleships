@@ -360,5 +360,5 @@ if __name__ == "__main__":
     #test.testIsHorizontal()
     #test.testMakeModel()
     ## Finally, run the simulation to test it manually ##
-    #runSimulation(500, 500)
+    runSimulation(500, 500)
     #test.testCheckShip()
