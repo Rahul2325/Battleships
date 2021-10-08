@@ -70,9 +70,14 @@ Parameters: dict mapping strs to values ; mouse event object ; 2D list of ints
 Returns: None
 '''
 def mousePressed(data, event, board):
-    position=getClickedCell(data,event)     
+    position=getClickedCell(data,event)
+    if data["winner"]!=None:
+        return     
     if(board=="user"):
         clickUserBoard(data,position[0],position[1])
+    else:
+        runGameTurn(data,position[0],position[1])
+    return  
 
 #### WEEK 1 ####
 
@@ -350,7 +355,8 @@ def isGameOver(board):
         for col in range(len(board[row])):
             if board[row][col]==SHIP_UNCLICKED:
                 return False
-        return True
+    return True
+    
 
 
 '''
@@ -359,6 +365,15 @@ Parameters: dict mapping strs to values ; Tkinter canvas
 Returns: None
 '''
 def drawGameOver(data, canvas):
+    if data["winner"]=="user":
+        canvas.create_text(300, 50, text="Congratulations you win", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 100, text="Press enter to play again", fill="black", font=('Helvetica 20 bold'))
+    elif data["winner"]=="comp":
+        canvas.create_text(300, 50, text="Computer wins", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 100, text="Press enter to play again", fill="black", font=('Helvetica 20 bold'))
+    elif data["winner"]=="draw":
+        canvas.create_text(300, 50, text="Its A Draw", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(250, 100, text="Press enter to play again", fill="black", font=('Helvetica 20 bold'))
     return
 
 
