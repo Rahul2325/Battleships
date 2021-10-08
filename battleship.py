@@ -39,7 +39,8 @@ def makeModel(data):
     data["TemporaryShip"]=[]
     data["noofshipsadded"]=0
     data["winner"]=None
-    
+    data["max"]=50
+    data["current"]=0
     return
 
 
@@ -326,6 +327,9 @@ def runGameTurn(data, row, col):
         updateBoard(data,data["Computerboard"],row,col,"user")
     guess=getComputerGuess(data["Userboard"])# 1D List is stored in guess variable [1,2]
     updateBoard(data, data["Userboard"], guess[0],guess[1], "comp")
+    data["current"]+=1
+    if data["current"]==data["max"]:
+        data["winner"]="draw"
     return
 
 
