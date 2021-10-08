@@ -319,6 +319,8 @@ def runGameTurn(data, row, col):
         return
     else:
         updateBoard(data,data["Computerboard"],row,col,"user")
+    guess=getComputerGuess(data["Userboard"])# 1D List is stored in guess variable [1,2]
+    updateBoard(data, data["Userboard"], guess[0],guess[1], "comp")
     return
 
 
