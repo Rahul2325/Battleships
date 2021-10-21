@@ -41,6 +41,7 @@ def makeModel(data):
     data["winner"]=None
     data["max"]=50
     data["current"]=0
+    
     return
 
 
@@ -53,6 +54,7 @@ def makeView(data, userCanvas, compCanvas):
     drawGrid(data,userCanvas,data["Userboard"],True) # grid for userboard
     drawGrid(data,compCanvas,data["Computerboard"],False) # grid for computerboard
     drawShip(data,userCanvas,data["TemporaryShip"])
+    drawGameOver(data,userCanvas)
     return
 
 
@@ -62,7 +64,8 @@ Parameters: dict mapping strs to values ; key event object
 Returns: None
 '''
 def keyPressed(data, event):
-    pass
+    if event:
+        makeModel(data)
 
 
 '''
@@ -78,7 +81,7 @@ def mousePressed(data, event, board):
         clickUserBoard(data,position[0],position[1])
     else:
         runGameTurn(data,position[0],position[1])
-    return  
+    return    
 
 #### WEEK 1 ####
 
@@ -164,7 +167,6 @@ def drawGrid(data, canvas, grid, showShips):
                 canvas.create_rectangle(data["cellsize"]*col, data["cellsize"]*row, data["cellsize"]*(col+1), data["cellsize"]*(row+1), fill="white")
             if grid[row][col]== SHIP_UNCLICKED and showShips == False:
                 canvas.create_rectangle(data["cellsize"]*col, data["cellsize"]*row, data["cellsize"]*(col+1), data["cellsize"]*(row+1), fill="blue")
-    
     return
 
 
@@ -176,16 +178,16 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    col=ship[0][1]
-    for i in range(len(ship)):
-        if(ship[i][1]!=col):
-            return False 
-    row=[]
-    for i in range(len(ship)):
+    for i in range(0,2,1):
+        if ship[i][1]!= ship[i+1][1]:
+            return False
+    row=[]        
+    for i in range(0,3,1):
         row.append(ship[i][0])
+        
     row.sort()
-    for i in range(len(row)-1):
-        if 1+row[i]!=row[i+1]:
+    for i in range(0,2,1):
+        if (row[i]+1!= row[i+1]):
             return False
     return True
     
@@ -197,18 +199,18 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    row=ship[0][0]
+    for i in range(0,2,1):
+        if (ship[i][0]!=ship[i+1][0]):
+            return False
     col=[]
-    for i in range(len(ship)):
-        if(ship[i][0]!=row):
-            return False 
-    for i in range(len(ship)):
+    for i in range(0,3,1):
         col.append(ship[i][1])
     col.sort()
-    for i in range(len(col)-1):
-        if 1+col[i]!=col[i+1]:
+    for i in range(0,2,1):
+        if (col[i]+1!=col[i+1]):
             return False
     return True
+
 
 
 '''
@@ -281,20 +283,21 @@ def clickUserBoard(data, row, col):
 
     #check No of user ships
     if numUserShip == 5:
+        print("Ships are ready to fire")
         return
 
     #check if user coordinates are already present in user ship
-    for i in range(len(userShip)):
-        if userCoordinates == userShip[i]:
-            return
+    #for i in range(len(userShip)):
+    if userCoordinates == userShip:
+        return
     userShip.append(userCoordinates)
 
     #check if user passed 3 coordinates for ship
     if len(userShip) == 3:
         placeShip(data)
     #checking No of ships added
-    if numUserShip == 5:
-        print("Ships are ready to fire")
+    #if numUserShip == 5:
+        #print("Ships are ready to fire")
     return
 
 
@@ -312,6 +315,8 @@ def updateBoard(data, board, row, col, player):
     else:
         if board[row][col]==EMPTY_UNCLICKED:
             board[row][col]=EMPTY_CLICKED
+    if isGameOver(board):
+        data["winner"]=player
     return
 
 
@@ -330,6 +335,7 @@ def runGameTurn(data, row, col):
     data["current"]+=1
     if data["current"]==data["max"]:
         data["winner"]="draw"
+
     return
 
 
@@ -346,7 +352,6 @@ def getComputerGuess(board):
         col = random.randint(0,9)
     if board[row][col]==EMPTY_UNCLICKED or board[row][col]==SHIP_UNCLICKED:
         return [row,col]
-    
 
 
 '''
@@ -360,7 +365,6 @@ def isGameOver(board):
             if board[row][col]==SHIP_UNCLICKED:
                 return False
     return True
-    
 
 
 '''
@@ -443,8 +447,8 @@ if __name__ == "__main__":
     #test.testIsHorizontal()
     #test.testMakeModel()
     ## Finally, run the simulation to test it manually ##
-    #runSimulation(500, 500)
+    runSimulation(500, 500)
     #test.testCheckShip()
     #test.testUpdateBoard()
     #test.testGetComputerGuess()
-    test.testIsGameOver()
+    #test.testIsGameOver()
